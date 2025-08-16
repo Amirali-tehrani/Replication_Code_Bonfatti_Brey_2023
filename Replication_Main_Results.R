@@ -226,7 +226,7 @@ table5 <- table5 %>% filter(Native != 1)
 # Create list to store models
 ivr <- list()
 
-# IV regreesion: Any_Response
+# IV regression: Any_Response
 ivr[[1]] <- feols(Any_Response ~ Indian_Mutiny + Manufacturing_1911 + Military +
                        Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
                        Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
@@ -235,10 +235,11 @@ ivr[[1]] <- feols(Any_Response ~ Indian_Mutiny + Manufacturing_1911 + Military +
                        Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
                        Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 |
                        D_Manufacturing ~ IM_Manu_Shock_17_13,
-                     data = table5, vcov = "hetero")
+                  data = table5,
+                  vcov = "hetero")
 
-# IV regreesion: Dummy_KC
-ivr[[1]] <- feols(Any_Response ~ Indian_Mutiny + Manufacturing_1911 + Military +
+# IV regression: Dummy_KC
+ivr[[2]] <- feols(Dummy_KC ~ Indian_Mutiny + Manufacturing_1911 + Military +
                     Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
                     Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
                     Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
@@ -246,11 +247,181 @@ ivr[[1]] <- feols(Any_Response ~ Indian_Mutiny + Manufacturing_1911 + Military +
                     Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
                     Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 |
                     D_Manufacturing ~ IM_Manu_Shock_17_13,
-                  data = table5, vcov = "hetero")
+                  data = table5,
+                  vcov = "hetero")
 
+# IV regression: Any_Civil_Disobedience
+ivr[[3]] <- feols(Any_Civil_Disobedience ~ Indian_Mutiny + Manufacturing_1911 + Military +
+                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+                    KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
+                    Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
+                    Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
+                    Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+                    Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+                    Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+                    Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+                    Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+                    Province_16 + Province_17 + Province_18 + Province_19 + Province_20 |
+                    D_Manufacturing ~ IM_Manu_Shock_17_13,
+                  data = table5,
+                  vcov = "hetero")
 
+# IV regression: Boycott_British_Goods
+ivr[[4]] <- feols(Boycott_British_Goods ~ Indian_Mutiny + Manufacturing_1911 + Military +
+                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+                    KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
+                    Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
+                    Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
+                    Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+                    Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+                    Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+                    Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+                    Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+                    Province_16 + Province_17 + Province_18 + Province_19 + Province_20 |
+                    D_Manufacturing ~ IM_Manu_Shock_17_13,
+                  data = table5,
+                  vcov = "hetero")
+
+# IV regression: Boycott_Councils
+ivr[[5]] <- feols(Boycott_Councils ~ Indian_Mutiny + Manufacturing_1911 + Military +
+                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+                    KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
+                    Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
+                    Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
+                    Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+                    Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+                    Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+                    Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+                    Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+                    Province_16 + Province_17 + Province_18 + Province_19 + Province_20 |
+                    D_Manufacturing ~ IM_Manu_Shock_17_13,
+                  data = table5,
+                  vcov = "hetero")
+
+# IV regression: Boycott_Educ
+ivr[[6]] <- feols(Boycott_Educ ~ Indian_Mutiny + Manufacturing_1911 + Military +
+                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+                    KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
+                    Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
+                    Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
+                    Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+                    Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+                    Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+                    Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+                    Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+                    Province_16 + Province_17 + Province_18 + Province_19 + Province_20 |
+                    D_Manufacturing ~ IM_Manu_Shock_17_13,
+                  data = table5,
+                  vcov = "hetero")
+
+# IV regression: Boycott_Courts_Priv_Cases
+ivr[[7]] <- feols(Boycott_Courts_Priv_Cases ~ Indian_Mutiny + Manufacturing_1911 + Military +
+                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+                    KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
+                    Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
+                    Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
+                    Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+                    Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+                    Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+                    Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+                    Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+                    Province_16 + Province_17 + Province_18 + Province_19 + Province_20 |
+                    D_Manufacturing ~ IM_Manu_Shock_17_13,
+                  data = table5,
+                  vcov = "hetero")
+
+# Order of the variables
+coef_map <- c("D_Manufacturing" = "Diff. Industry share 1911-1921",
+              "Indian_Mutiny" = "Mutiny 1857",
+              "KC" = "Khilafat member",
+              "AICC_PCC" = "PCC or AICC member",
+              "Manufacturing_1911" = "Industrial employment share 1911",
+              "Military" = "Military share 1911",
+              "Urban_1911" = "Urban share 1911",
+              "Coastal" = "Coastal",
+              "Literacy_Rate" = "Literate share 1911",
+              "Literacy_Eng" = "Literate English share 1911",
+              "Age_above_20" = "Age 20+ share 1911")
+
+# Display results in console
+modelsummary(ivr,
+             coef_map = coef_map,
+             stars = c('*' = 0.10, '**' = 0.05, '***' = 0.01),
+             gof_map = gof_custom,
+             notes = "Robust standard errors in parentheses.",
+             title = "Share of interviewees in favour of reported action")
+
+# Export to LaTeX
+modelsummary(ivr,
+             output = "./Output/Table5.tex",
+             coef_map = coef_map,
+             stars = c('*' = 0.10, '**' = 0.05, '***' = 0.01),
+             notes = "Robust standard errors in parentheses.",
+             title = "Share of interviewees in favour of reported action",
+             fmt = 3,
+             escape = FALSE,
+             threeparttable = TRUE,
+             booktabs = TRUE)
 
 ##########################
 # Replication of Table 6 #
 ##########################
+
+# Load data
+table6 <- read_dta("./Data/Analysis/Analysis_Data_ElectionConstituencylevel.dta")
+
+# Create list to store models
+ivr <- list()
+
+# Second stage of IV for Congress_Winner
+ivr[[1]] <- feols(Congress_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
+                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+                    Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
+                    Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
+                    Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
+                    Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
+                    Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 + General_Urban |
+                    D_Manufacturing_FR_1913_36 ~ IM_Manu_Shock_17_13,
+                  data = table6,
+                  subset = table6$Muhammadan != 1 & table6$NoofSeats == 1,
+                  vcov = "hetero")
+
+# IV regression: Unionist_Winner
+ivr[[2]] <- feols(Unionist_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
+                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+                    Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
+                    Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
+                    Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
+                    Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
+                    Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 + General_Urban |
+                    D_Manufacturing_FR_1913_36 ~ IM_Manu_Shock_17_13,
+                  data = table6,
+                  subset = table6$Muhammadan != 1 & table6$NoofSeats == 1,
+                  vcov = "hetero")
+
+# IV regression: Independent_Winner
+ivr[[3]] <- feols(Independent_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
+                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+                    Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
+                    Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
+                    Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
+                    Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
+                    Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 + General_Urban |
+                    D_Manufacturing_FR_1913_36 ~ IM_Manu_Shock_17_13,
+                  data = table6,
+                  subset = table6$Muhammadan != 1 & table6$NoofSeats == 1,
+                  vcov = "hetero")
+
+# IV regression: Other_Winner
+ivr[[4]] <- feols(Other_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
+                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+                    Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
+                    Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
+                    Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
+                    Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
+                    Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 + General_Urban |
+                    D_Manufacturing_FR_1913_36 ~ IM_Manu_Shock_17_13,
+                  data = table6,
+                  subset = table6$Muhammadan != 1 & table6$NoofSeats == 1,
+                  vcov = "hetero")
 

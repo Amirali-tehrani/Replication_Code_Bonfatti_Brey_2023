@@ -223,23 +223,42 @@ table5 <- read_dta("./Data/Analysis/Analysis_Data_CivilDisDistrictlevel.dta")
 # Drop observations where Native == 1
 table5 <- table5 %>% filter(Native != 1)
 
-# Create list to store models
-ivr <- list()
+# First stage of IV for Any_Response
+f1 <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Indian_Mutiny + Manufacturing_1911 +
+              Military + Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+              Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
+              Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
+              Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
+              Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
+              Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19,
+            data = table5,
+            vcov = "hetero")
 
-# IV regression: Any_Response
-ivr[[1]] <- feols(Any_Response ~ Indian_Mutiny + Manufacturing_1911 + Military +
-                       Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
-                       Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
-                       Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
-                       Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
-                       Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
-                       Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 |
-                       D_Manufacturing ~ IM_Manu_Shock_17_13,
-                  data = table5,
-                  vcov = "hetero")
+# Second stage of IV for Any_Response
+iv1 <- feols(Any_Response ~ Indian_Mutiny + Manufacturing_1911 + Military +
+              Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+              Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
+              Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
+              Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
+              Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
+              Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 |
+              D_Manufacturing ~ IM_Manu_Shock_17_13,
+            data = table5,
+            vcov = "hetero")
 
-# IV regression: Dummy_KC
-ivr[[2]] <- feols(Dummy_KC ~ Indian_Mutiny + Manufacturing_1911 + Military +
+# First stage of IV for Dummy_KC
+f2 <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Indian_Mutiny + Manufacturing_1911 +
+              Military + Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+              Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
+              Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
+              Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
+              Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
+              Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19,
+            data = table5,
+            vcov = "hetero")
+
+# Second stage of IV for Dummy_KC
+iv2 <- feols(Dummy_KC ~ Indian_Mutiny + Manufacturing_1911 + Military +
                     Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
                     Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
                     Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
@@ -250,8 +269,19 @@ ivr[[2]] <- feols(Dummy_KC ~ Indian_Mutiny + Manufacturing_1911 + Military +
                   data = table5,
                   vcov = "hetero")
 
-# IV regression: Any_Civil_Disobedience
-ivr[[3]] <- feols(Any_Civil_Disobedience ~ Indian_Mutiny + Manufacturing_1911 + Military +
+# First stage of IV for Any_Civil_Disobedience
+f3 <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Indian_Mutiny + Manufacturing_1911 +
+              Military + Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+              Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
+              Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
+              Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
+              Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
+              Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19,
+            data = table5,
+            vcov = "hetero")
+
+# Second stage of IV for Any_Civil_Disobedience
+iv3 <- feols(Any_Civil_Disobedience ~ Indian_Mutiny + Manufacturing_1911 + Military +
                     Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
                     KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
                     Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
@@ -370,11 +400,47 @@ modelsummary(ivr,
 # Load data
 table6 <- read_dta("./Data/Analysis/Analysis_Data_ElectionConstituencylevel.dta")
 
-# Create list to store models
-ivr <- list()
+# First stage of IV
+f1 <- feols(D_Manufacturing_FR_1913_36 ~ IM_Manu_Shock_17_13 + Indian_Mutiny +
+              Manufacturing_1911 + Military + Urban_1911 + Coastal + Literacy_Rate +
+              Literacy_Eng + Age_above_20 + Census_Dummy_1 + Census_Dummy_2 + 
+              Census_Dummy_3 + Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + 
+              Census_Dummy_7 + Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + 
+              Census_Dummy_11 + Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + 
+              Census_Dummy_15 + Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + 
+              Census_Dummy_19 + General_Urban,
+            data = table6,
+            subset = table6$Muhammadan != 1 & table6$NoofSeats == 1,
+            vcov = "hetero")
 
 # Second stage of IV for Congress_Winner
-ivr[[1]] <- feols(Congress_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
+iv1 <- feols(Congress_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
+               Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+               Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
+               Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
+               Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
+               Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
+               Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 + General_Urban |
+               D_Manufacturing_FR_1913_36 ~ IM_Manu_Shock_17_13,
+             data = table6,
+             subset = table6$Muhammadan != 1 & table6$NoofSeats == 1,
+             vcov = "hetero")
+
+# Second stage of IV for Unionist_Winner
+iv2 <- feols(Unionist_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
+               Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+               Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
+               Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
+               Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
+               Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
+               Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 + General_Urban |
+               D_Manufacturing_FR_1913_36 ~ IM_Manu_Shock_17_13,
+             data = table6,
+             subset = table6$Muhammadan != 1 & table6$NoofSeats == 1,
+             vcov = "hetero")
+
+# Second stage of IV for Independent_Winner
+iv3 <- feols(Independent_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
                     Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
                     Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
                     Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
@@ -386,8 +452,8 @@ ivr[[1]] <- feols(Congress_Winner ~ Indian_Mutiny + Manufacturing_1911 + Militar
                   subset = table6$Muhammadan != 1 & table6$NoofSeats == 1,
                   vcov = "hetero")
 
-# IV regression: Unionist_Winner
-ivr[[2]] <- feols(Unionist_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
+# Second stage of IV for Other_Winner
+iv4 <- feols(Other_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
                     Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
                     Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
                     Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
@@ -399,29 +465,37 @@ ivr[[2]] <- feols(Unionist_Winner ~ Indian_Mutiny + Manufacturing_1911 + Militar
                   subset = table6$Muhammadan != 1 & table6$NoofSeats == 1,
                   vcov = "hetero")
 
-# IV regression: Independent_Winner
-ivr[[3]] <- feols(Independent_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
-                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
-                    Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
-                    Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
-                    Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
-                    Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
-                    Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 + General_Urban |
-                    D_Manufacturing_FR_1913_36 ~ IM_Manu_Shock_17_13,
-                  data = table6,
-                  subset = table6$Muhammadan != 1 & table6$NoofSeats == 1,
-                  vcov = "hetero")
+# Calculate F-statistics for first stage
+f_stat <- round(fitstat(iv1, "ivwald1", simplify = TRUE)$stat, 2)
 
-# IV regression: Other_Winner
-ivr[[4]] <- feols(Other_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
-                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
-                    Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
-                    Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
-                    Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
-                    Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
-                    Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 + General_Urban |
-                    D_Manufacturing_FR_1913_36 ~ IM_Manu_Shock_17_13,
-                  data = table6,
-                  subset = table6$Muhammadan != 1 & table6$NoofSeats == 1,
-                  vcov = "hetero")
+# Coefficient on the instrument
+first_stage_coef <- round(coef(f1)["IM_Manu_Shock_17_13"], 3)
 
+modelsummary(list(iv1,iv2,iv3,iv3))
+
+# Create LaTeX table
+etable(iv1, iv2, iv3, iv4,
+       dict = c("D_Manufacturing_FR_1913_36" = "Δ Industry share 1913–1936",
+                "Indian_Mutiny" = "Mutiny 1857",
+                "Manufacturing_1911" = "Industrial employment share 1911",
+                "Military" = "Military share 1911",
+                "Urban_1911" = "Urban share 1911",
+                "Coastal" = "Coastal",
+                "Literacy_Rate" = "Literate share 1911",
+                "Literacy_Eng" = "Literate English share 1911",
+                "Age_above_20" = "Age 20+ share 1911",
+                "General_Urban" = "Urban constituency"),
+       headers = list("(1)" = "Congress",
+                      "(2)" = "Unionist", 
+                      "(3)" = "Independents",
+                      "(4)" = "Other"),
+       title = "Dependent variable: Seats won by reported party",
+       extralines = list("Province FE" = rep("Yes", 4),
+                         "F-stat (1st stage)" = rep(f_stat, 4),
+                         "First Stage" = rep(paste0(first_stage_coef, "***"), 4),
+                         "N (constituencies)" = rep("335", 4)),
+       file = "./Output/Table6.tex",
+       replace = TRUE,
+       se.below = TRUE,
+       signif.code = c("***" = 0.01, "**" = 0.05, "*" = 0.1),
+       digits = 3)

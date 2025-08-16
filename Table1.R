@@ -4,8 +4,8 @@
 
 # Load required libraries
 library(tidyverse)    # For data handling
-library(haven)        # for reading .dta files
-library(fixest)       # for fast fixed effects estimation with clustering
+library(haven)        # For reading .dta files
+library(fixest)       # For fast fixed effects estimation with clustering
 library(modelsummary) # For making tables
 
 # Read the data
@@ -15,77 +15,68 @@ df <- read_dta("./Data/Analysis/Analysis_Data_Districtlevel.dta")
 models <- list()
 
 # Column 1
-models[["(1)"]] <- lm(D_Manufacturing ~ IM_Manu_Shock_17_13 + EX_Raw_Food_Shock_17_13,
-                      data = df)
+models[["(1)"]] <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + EX_Raw_Food_Shock_17_13,
+                         data = df, 
+                         cluster = ~Census_Division)
 
 # Column 2
-models[["(2)"]] <- lm(D_Manufacturing ~ IM_Manu_Shock_17_13 + EX_Raw_Food_Shock_17_13 +
-                        Manufacturing_1911 + Military + Urban_1911 + Coastal +
-                        Literacy_Rate + Literacy_Eng + Age_above_20 +
-                        Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 +
-                        Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 +
-                        Census_Dummy_7 + Census_Dummy_8 + Census_Dummy_9 +
-                        Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 +
-                        Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
-                        Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 +
-                        Census_Dummy_19,
-                      data = df)
+models[["(2)"]] <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + EX_Raw_Food_Shock_17_13 +
+                           Manufacturing_1911 + Military + Urban_1911 + Coastal +
+                           Literacy_Rate + Literacy_Eng + Age_above_20 |
+                           Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 +
+                           Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 +
+                           Census_Dummy_7 + Census_Dummy_8 + Census_Dummy_9 +
+                           Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 +
+                           Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+                           Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 +
+                           Census_Dummy_19,
+                         data = df,
+                         cluster = ~Census_Division)
 
 # Column 3
-models[["(3)"]] <- lm(D_Manufacturing ~ IM_Manu_Shock_17_13 + Manufacturing_1911 +
-                        Military + Urban_1911 + Coastal + Literacy_Rate +
-                        Literacy_Eng + Age_above_20 +
-                        Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 +
-                        Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 +
-                        Census_Dummy_7 + Census_Dummy_8 + Census_Dummy_9 +
-                        Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 +
-                        Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
-                        Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 +
-                        Census_Dummy_19,
-                      data = df)
+models[["(3)"]] <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Manufacturing_1911 +
+                           Military + Urban_1911 + Coastal + Literacy_Rate +
+                           Literacy_Eng + Age_above_20 |
+                           Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 +
+                           Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 +
+                           Census_Dummy_7 + Census_Dummy_8 + Census_Dummy_9 +
+                           Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 +
+                           Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+                           Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 +
+                           Census_Dummy_19,
+                         data = df,
+                         cluster = ~Census_Division)
 
 # Column 4
-models[["(4)"]] <- lm(D_Manufacturing ~ IM_Manu_Shock_17_13 + Manufacturing_1911 +
-                        Military + Urban_1911 + Coastal + Literacy_Rate +
-                        Literacy_Eng + Age_above_20 + USA_Trade_Shock_21_13 +
-                        Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 +
-                        Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 +
-                        Census_Dummy_7 + Census_Dummy_8 + Census_Dummy_9 +
-                        Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 +
-                        Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
-                        Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 +
-                        Census_Dummy_19,
-                      data = df)
+models[["(4)"]] <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Manufacturing_1911 +
+                           Military + Urban_1911 + Coastal + Literacy_Rate +
+                           Literacy_Eng + Age_above_20 + USA_Trade_Shock_21_13 |
+                           Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 +
+                           Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 +
+                           Census_Dummy_7 + Census_Dummy_8 + Census_Dummy_9 +
+                           Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 +
+                           Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+                           Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 +
+                           Census_Dummy_19,
+                         data = df,
+                         cluster = ~Census_Division)
 
 # Column 5 (with subset condition)
 df_subset <- df %>%
   filter(Native_State != "Native" | is.na(Native_State))
 
-models[["(5)"]] <- lm(D_Manufacturing ~ IM_Manu_Shock_17_13 + Manufacturing_1911 +
-                        Military + Urban_1911 + Coastal + Literacy_Rate +
-                        Literacy_Eng + Age_above_20 +
-                        Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 +
-                        Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 +
-                        Census_Dummy_7 + Census_Dummy_8 + Census_Dummy_9 +
-                        Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 +
-                        Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
-                        Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 +
-                        Census_Dummy_19,
-                      data = df_subset)
-
-# Function to add clustered standard errors to models
-add_clustered_se <- function(model, cluster_var, data_used) {
-  cluster_robust_vcov <- vcovCL(model, cluster = data_used[[cluster_var]])
-  model$vcov <- cluster_robust_vcov
-  return(model)
-}
-
-# Add clustered standard errors to all models
-models[["(1)"]] <- add_clustered_se(models[["(1)"]], "Census_Division", df)
-models[["(2)"]] <- add_clustered_se(models[["(2)"]], "Census_Division", df)
-models[["(3)"]] <- add_clustered_se(models[["(3)"]], "Census_Division", df)
-models[["(4)"]] <- add_clustered_se(models[["(4)"]], "Census_Division", df)
-models[["(5)"]] <- add_clustered_se(models[["(5)"]], "Census_Division", df_subset)
+models[["(5)"]] <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Manufacturing_1911 +
+                           Military + Urban_1911 + Coastal + Literacy_Rate +
+                           Literacy_Eng + Age_above_20 |
+                           Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 +
+                           Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 +
+                           Census_Dummy_7 + Census_Dummy_8 + Census_Dummy_9 +
+                           Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 +
+                           Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+                           Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 +
+                           Census_Dummy_19,
+                         data = df_subset,
+                         cluster = ~Census_Division)
 
 # Create custom gof_map for better formatting
 gof_custom <- tibble(

@@ -259,15 +259,15 @@ f2 <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Indian_Mutiny + Manufacturin
 
 # Second stage of IV for Dummy_KC
 iv2 <- feols(Dummy_KC ~ Indian_Mutiny + Manufacturing_1911 + Military +
-                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
-                    Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
-                    Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
-                    Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
-                    Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
-                    Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 |
-                    D_Manufacturing ~ IM_Manu_Shock_17_13,
-                  data = table5,
-                  vcov = "hetero")
+               Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+               Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
+               Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
+               Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
+               Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
+               Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 |
+               D_Manufacturing ~ IM_Manu_Shock_17_13,
+             data = table5,
+             vcov = "hetero")
 
 # First stage of IV for Any_Civil_Disobedience
 f3 <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Indian_Mutiny + Manufacturing_1911 +
@@ -276,7 +276,11 @@ f3 <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Indian_Mutiny + Manufacturin
               Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
               Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
               Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
-              Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19,
+              Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+              Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+              Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+              Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+              Province_16 + Province_17 + Province_18 + Province_19 + Province_20,
             data = table5,
             vcov = "hetero")
 
@@ -296,8 +300,23 @@ iv3 <- feols(Any_Civil_Disobedience ~ Indian_Mutiny + Manufacturing_1911 + Milit
                   data = table5,
                   vcov = "hetero")
 
-# IV regression: Boycott_British_Goods
-ivr[[4]] <- feols(Boycott_British_Goods ~ Indian_Mutiny + Manufacturing_1911 + Military +
+# First stage of IV for Boycott_British_Goods
+f4 <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Indian_Mutiny + Manufacturing_1911 +
+              Military + Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+              Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + Census_Dummy_4 +
+              Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 + Census_Dummy_8 +
+              Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 + Census_Dummy_12 + 
+              Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 + Census_Dummy_16 + 
+              Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+              Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+              Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+              Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+              Province_16 + Province_17 + Province_18 + Province_19 + Province_20,
+            data = table5,
+            vcov = "hetero")
+
+# Second stage of IV Boycott_British_Goods
+iv4 <- feols(Boycott_British_Goods ~ Indian_Mutiny + Manufacturing_1911 + Military +
                     Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
                     KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
                     Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
@@ -312,86 +331,184 @@ ivr[[4]] <- feols(Boycott_British_Goods ~ Indian_Mutiny + Manufacturing_1911 + M
                   data = table5,
                   vcov = "hetero")
 
-# IV regression: Boycott_Councils
-ivr[[5]] <- feols(Boycott_Councils ~ Indian_Mutiny + Manufacturing_1911 + Military +
-                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
-                    KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
-                    Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
-                    Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
-                    Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
-                    Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
-                    Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
-                    Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
-                    Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
-                    Province_16 + Province_17 + Province_18 + Province_19 + Province_20 |
-                    D_Manufacturing ~ IM_Manu_Shock_17_13,
-                  data = table5,
-                  vcov = "hetero")
+# First stage of IV for Boycott_Councils
+f5 <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Indian_Mutiny + Manufacturing_1911 +
+              Military + Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+              KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
+              Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
+              Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
+              Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+              Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+              Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+              Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+              Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+              Province_16 + Province_17 + Province_18 + Province_19 + Province_20,
+            data = table5,
+            vcov = "hetero")
 
-# IV regression: Boycott_Educ
-ivr[[6]] <- feols(Boycott_Educ ~ Indian_Mutiny + Manufacturing_1911 + Military +
-                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
-                    KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
-                    Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
-                    Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
-                    Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
-                    Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
-                    Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
-                    Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
-                    Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
-                    Province_16 + Province_17 + Province_18 + Province_19 + Province_20 |
-                    D_Manufacturing ~ IM_Manu_Shock_17_13,
-                  data = table5,
-                  vcov = "hetero")
+# Second stage of IV for Boycott_Councils
+iv5 <- feols(Boycott_Councils ~ Indian_Mutiny + Manufacturing_1911 + Military +
+              Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+              KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
+              Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
+              Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
+              Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+              Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+              Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+              Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+              Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+              Province_16 + Province_17 + Province_18 + Province_19 + Province_20 |
+              D_Manufacturing ~ IM_Manu_Shock_17_13,
+            data = table5,
+            vcov = "hetero")
 
-# IV regression: Boycott_Courts_Priv_Cases
-ivr[[7]] <- feols(Boycott_Courts_Priv_Cases ~ Indian_Mutiny + Manufacturing_1911 + Military +
-                    Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
-                    KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
-                    Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
-                    Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
-                    Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
-                    Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
-                    Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
-                    Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
-                    Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
-                    Province_16 + Province_17 + Province_18 + Province_19 + Province_20 |
-                    D_Manufacturing ~ IM_Manu_Shock_17_13,
-                  data = table5,
-                  vcov = "hetero")
+# First stage of IV for Boycott_Educ
+f6 <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Indian_Mutiny + Manufacturing_1911 +
+               Military + Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+               KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
+               Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
+               Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
+               Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+               Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+               Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+               Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+               Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+               Province_16 + Province_17 + Province_18 + Province_19 + Province_20,
+             data = table5,
+             vcov = "hetero")
 
-# Order of the variables
-coef_map <- c("D_Manufacturing" = "Diff. Industry share 1911-1921",
-              "Indian_Mutiny" = "Mutiny 1857",
-              "KC" = "Khilafat member",
-              "AICC_PCC" = "PCC or AICC member",
-              "Manufacturing_1911" = "Industrial employment share 1911",
-              "Military" = "Military share 1911",
-              "Urban_1911" = "Urban share 1911",
-              "Coastal" = "Coastal",
-              "Literacy_Rate" = "Literate share 1911",
-              "Literacy_Eng" = "Literate English share 1911",
-              "Age_above_20" = "Age 20+ share 1911")
+# Second stage of IV for Boycott_Educ
+iv6 <- feols(Boycott_Educ ~ Indian_Mutiny + Manufacturing_1911 + Military +
+               Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+               KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
+               Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
+               Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
+               Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+               Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+               Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+               Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+               Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+               Province_16 + Province_17 + Province_18 + Province_19 + Province_20 |
+               D_Manufacturing ~ IM_Manu_Shock_17_13,
+             data = table5,
+             vcov = "hetero")
 
-# Display results in console
-modelsummary(ivr,
-             coef_map = coef_map,
-             stars = c('*' = 0.10, '**' = 0.05, '***' = 0.01),
-             gof_map = gof_custom,
-             notes = "Robust standard errors in parentheses.",
-             title = "Share of interviewees in favour of reported action")
+# First stage of IV for Boycott_Courts_Priv_Cases
+f7 <- feols(D_Manufacturing ~ IM_Manu_Shock_17_13 + Indian_Mutiny + Manufacturing_1911 +
+               Military + Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+               KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
+               Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
+               Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
+               Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+               Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+               Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+               Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+               Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+               Province_16 + Province_17 + Province_18 + Province_19 + Province_20,
+             data = table5,
+             vcov = "hetero")
 
-# Export to LaTeX
-modelsummary(ivr,
-             output = "./Output/Table5.tex",
-             coef_map = coef_map,
-             stars = c('*' = 0.10, '**' = 0.05, '***' = 0.01),
-             notes = "Robust standard errors in parentheses.",
-             title = "Share of interviewees in favour of reported action",
-             fmt = 3,
-             escape = FALSE,
-             threeparttable = TRUE,
-             booktabs = TRUE)
+# Second stage of IV for Boycott_Courts_Priv_Cases
+iv7 <- feols(Boycott_Courts_Priv_Cases ~ Indian_Mutiny + Manufacturing_1911 + Military +
+               Urban_1911 + Coastal + Literacy_Rate + Literacy_Eng + Age_above_20 + 
+               KC + AICC_PCC + Census_Dummy_1 + Census_Dummy_2 + Census_Dummy_3 + 
+               Census_Dummy_4 + Census_Dummy_5 + Census_Dummy_6 + Census_Dummy_7 +
+               Census_Dummy_8 + Census_Dummy_9 + Census_Dummy_10 + Census_Dummy_11 +
+               Census_Dummy_12 + Census_Dummy_13 + Census_Dummy_14 + Census_Dummy_15 +
+               Census_Dummy_16 + Census_Dummy_17 + Census_Dummy_18 + Census_Dummy_19 +
+               Province_1 + Province_2 + Province_3 + Province_4 + Province_5 +
+               Province_6 + Province_7 + Province_8 + Province_9 + Province_10 + 
+               Province_11 + Province_12 + Province_13 + Province_14 + Province_15 +
+               Province_16 + Province_17 + Province_18 + Province_19 + Province_20 |
+               D_Manufacturing ~ IM_Manu_Shock_17_13,
+             data = table5,
+             vcov = "hetero")
+
+# Calculate F-statistics for first stage
+f_stat1 <- round(fitstat(iv1, "ivwald1", simplify = TRUE)$stat, 2)
+f_stat2 <- round(fitstat(iv2, "ivwald1", simplify = TRUE)$stat, 2)
+f_stat3 <- round(fitstat(iv3, "ivwald1", simplify = TRUE)$stat, 2)
+f_stat4 <- round(fitstat(iv4, "ivwald1", simplify = TRUE)$stat, 2)
+f_stat5 <- round(fitstat(iv5, "ivwald1", simplify = TRUE)$stat, 2)
+f_stat6 <- round(fitstat(iv6, "ivwald1", simplify = TRUE)$stat, 2)
+f_stat7 <- round(fitstat(iv7, "ivwald1", simplify = TRUE)$stat, 2)
+
+# Combine F-statistics into vector
+f_stats <- c(f_stat1, f_stat2, f_stat3, f_stat4, f_stat5, f_stat6, f_stat7)
+
+# Get first stage coefficients and standard errors
+first_stage_coef1 <- round(coef(f1)["IM_Manu_Shock_17_13"], 3)
+first_stage_coef2 <- round(coef(f2)["IM_Manu_Shock_17_13"], 3)
+first_stage_coef3 <- round(coef(f3)["IM_Manu_Shock_17_13"], 3)
+first_stage_coef4 <- round(coef(f4)["IM_Manu_Shock_17_13"], 3)
+first_stage_coef5 <- round(coef(f5)["IM_Manu_Shock_17_13"], 3)
+first_stage_coef6 <- round(coef(f6)["IM_Manu_Shock_17_13"], 3)
+first_stage_coef7 <- round(coef(f7)["IM_Manu_Shock_17_13"], 3)
+
+first_stage_coefs <- c(first_stage_coef1, first_stage_coef2, first_stage_coef3, 
+                       first_stage_coef4, first_stage_coef5, first_stage_coef6, first_stage_coef7)
+
+# Get first stage standard errors
+first_stage_se1 <- round(sqrt(vcov(f1)["IM_Manu_Shock_17_13", "IM_Manu_Shock_17_13"]), 3)
+first_stage_se2 <- round(sqrt(vcov(f2)["IM_Manu_Shock_17_13", "IM_Manu_Shock_17_13"]), 3)
+first_stage_se3 <- round(sqrt(vcov(f3)["IM_Manu_Shock_17_13", "IM_Manu_Shock_17_13"]), 3)
+first_stage_se4 <- round(sqrt(vcov(f4)["IM_Manu_Shock_17_13", "IM_Manu_Shock_17_13"]), 3)
+first_stage_se5 <- round(sqrt(vcov(f5)["IM_Manu_Shock_17_13", "IM_Manu_Shock_17_13"]), 3)
+first_stage_se6 <- round(sqrt(vcov(f6)["IM_Manu_Shock_17_13", "IM_Manu_Shock_17_13"]), 3)
+first_stage_se7 <- round(sqrt(vcov(f7)["IM_Manu_Shock_17_13", "IM_Manu_Shock_17_13"]), 3)
+
+first_stage_ses <- c(first_stage_se1, first_stage_se2, first_stage_se3, 
+                     first_stage_se4, first_stage_se5, first_stage_se6, first_stage_se7)
+
+# Create complete etable
+etable(iv1, iv2, iv3, iv4, iv5, iv6, iv7,
+       
+       # Variable labels dictionary
+       dict = c("fit_D_Manufacturing" = "Diff. Industrial share 1911-1921",
+                "Indian_Mutiny" = "Mutiny 1857",
+                "KC" = "Khilafat member",
+                "AICC_PCC" = "PCC or AICC member",
+                "Manufacturing_1911" = "Industrial employment share 1911",
+                "Military" = "Military share 1911", 
+                "Urban_1911" = "Urban share 1911",
+                "Coastal" = "Coastal",
+                "Literacy_Rate" = "Literate share 1911",
+                "Literacy_Eng" = "Literate English share 1911",
+                "Age_above_20" = "Age 20+ share 1911"),
+       
+       # Column headers
+       headers = list("Enquiry response" = 1, 
+                      "KC member response" = 2,
+                      "For immediate civil disobedience" = 3,
+                      "British products" = 4,
+                      "For boycott of Legislative councils" = 5,
+                      "British education" = 6,
+                      "British courts" = 7),
+       
+       # Table title
+       title = "Dependent variable: Share of interviewees in favour of reported action",
+       
+       # Keep only relevant variables (hide census and province dummies)
+       keep = c("fit_D_Manufacturing", "Indian_Mutiny", "Manufacturing_1911", 
+                "Military", "Urban_1911", "Coastal", "Literacy_Rate", 
+                "Literacy_Eng", "Age_above_20", "KC", "AICC_PCC"),
+       
+       fixef_sizes = TRUE,
+       fixef_sizes.simplify = TRUE,
+       
+       extralines = list(
+         "Province FE" = c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"),
+         "INC FE" = c("No", "No", "Yes", "Yes", "Yes", "Yes", "Yes"),
+         "F-stat (1st stage)" = f_stats,
+         "First Stage" = paste0(first_stage_coefs, " (", first_stage_ses, ")")
+       ),
+       
+       file = "./Output/Table5.tex",
+
+       # Formatting options
+       se.below = TRUE,
+       signif.code = c("***" = 0.01, "**" = 0.05, "*" = 0.1),
+       digits = 3)
 
 ##########################
 # Replication of Table 6 #
@@ -475,7 +592,7 @@ modelsummary(list(iv1,iv2,iv3,iv3))
 
 # Create LaTeX table
 etable(iv1, iv2, iv3, iv4,
-       dict = c("D_Manufacturing_FR_1913_36" = "Δ Industry share 1913–1936",
+       dict = c("D_Manufacturing_FR_1913_36" = "Diff. Industry share 1913–1936",
                 "Indian_Mutiny" = "Mutiny 1857",
                 "Manufacturing_1911" = "Industrial employment share 1911",
                 "Military" = "Military share 1911",

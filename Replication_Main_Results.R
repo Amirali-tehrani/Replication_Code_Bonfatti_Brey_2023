@@ -477,13 +477,13 @@ etable(iv1, iv2, iv3, iv4, iv5, iv6, iv7,
                 "Age_above_20" = "Age 20+ share 1911"),
        
        # Column headers
-       headers = list("Enquiry response" = 1, 
-                      "KC member response" = 2,
-                      "For immediate civil disobedience" = 3,
-                      "British products" = 4,
-                      "For boycott of Legislative councils" = 5,
-                      "British education" = 6,
-                      "British courts" = 7),
+       headers = c("Enquiry response", 
+                   "KC member response",
+                   "For immediate civil disobedience",
+                   "British products",
+                   "For boycott of Legislative councils",
+                   "British education",
+                   "British courts"),
        
        # Table title
        title = "Dependent variable: Share of interviewees in favour of reported action",
@@ -503,7 +503,10 @@ etable(iv1, iv2, iv3, iv4, iv5, iv6, iv7,
          "First Stage" = paste0(first_stage_coefs, " (", first_stage_ses, ")")
        ),
        
+       # Output to LaTeX file
+       tex = TRUE,
        file = "./Output/Table5.tex",
+       replace = TRUE,
 
        # Formatting options
        se.below = TRUE,
@@ -585,13 +588,28 @@ iv4 <- feols(Other_Winner ~ Indian_Mutiny + Manufacturing_1911 + Military +
 # Calculate F-statistics for first stage
 f_stat <- round(fitstat(iv1, "ivwald1", simplify = TRUE)$stat, 2)
 
-# Coefficient on the instrument
+# Coefficient and SE on the instrument from first stage
 first_stage_coef <- round(coef(f1)["IM_Manu_Shock_17_13"], 3)
+first_stage_se <- round(se(f1)["IM_Manu_Shock_17_13"], 3)
 
-modelsummary(list(iv1,iv2,iv3,iv3))
+# Create first stage display with coefficient and SE in parentheses
+first_stage_display <- paste0(first_stage_coef, "***", " (", first_stage_se, ")")
+
+modelsummary(list(iv1, iv2, iv3, iv4))
+etable(iv1, iv2, iv3, iv4)
 
 # Create LaTeX table
 etable(iv1, iv2, iv3, iv4,
+       keep = c("D_Manufacturing_FR_1913_36",
+                "Indian_Mutiny",
+                "Manufacturing_1911", 
+                "Military",
+                "Urban_1911",
+                "Coastal",
+                "Literacy_Rate", 
+                "Literacy_Eng",
+                "Age_above_20",
+                "General_Urban"),
        dict = c("D_Manufacturing_FR_1913_36" = "Diff. Industry share 1913–1936",
                 "Indian_Mutiny" = "Mutiny 1857",
                 "Manufacturing_1911" = "Industrial employment share 1911",
@@ -609,7 +627,7 @@ etable(iv1, iv2, iv3, iv4,
        title = "Dependent variable: Seats won by reported party",
        extralines = list("Province FE" = rep("Yes", 4),
                          "F-stat (1st stage)" = rep(f_stat, 4),
-                         "First Stage" = rep(paste0(first_stage_coef, "***"), 4),
+                         "First Stage" = rep(first_stage_display, 4),
                          "N (constituencies)" = rep("335", 4)),
        file = "./Output/Table6.tex",
        replace = TRUE,

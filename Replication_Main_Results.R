@@ -8,6 +8,8 @@ library(haven)        # For reading .dta files
 library(fixest)       # For fast fixed effects estimation with clustering
 library(modelsummary) # For making tables
 
+rm(list=ls())
+
 ##########################
 # Replication of Table 1 #
 ##########################
@@ -133,33 +135,33 @@ industry_data <- read_dta("./Data/Analysis/Analysis_Data_Industrylevel.dta")
 
 # Column 1: Basic regression
 model1 <- feols(Perc_Manufacturing ~ D_IM_Manu_Trade_17_13 + D_EX_Raw_Food_Trade_17_13, 
-                data = industry_data, 
-                cluster = ~Sector2)
+                data = industry_data,
+                vcov=vcov_cluster(~Sector2))
 
 # Column 2: Add Log_Manufacturing_1911
 model2 <- feols(Perc_Manufacturing ~ D_IM_Manu_Trade_17_13 + D_EX_Raw_Food_Trade_17_13 + 
                   Log_Manufacturing_1911, 
                 data = industry_data, 
-                cluster = ~Sector2)
+                vcov = vcov_cluster(~Sector2))
 
 # Column 3: Add sector fixed effects
 model3 <- feols(Perc_Manufacturing ~ D_IM_Manu_Trade_17_13 + D_EX_Raw_Food_Trade_17_13 + 
                   Log_Manufacturing_1911 | Sector2, 
                 data = industry_data, 
-                cluster = ~Sector2)
+                vcov = vcov_cluster(~Sector2))
 
 # Column 4: Subset to Manufactures == 1, exclude D_EX_Raw_Food_Trade_17_13
 model4 <- feols(Perc_Manufacturing ~ D_IM_Manu_Trade_17_13 + Log_Manufacturing_1911 | Sector2, 
                 data = industry_data, 
                 subset = ~Manufactures == 1,
-                cluster = ~Sector2)
+                vcov = vcov_cluster(~Sector2))
 
 # Column 5: Add D_USA_Trade_21_13
 model5 <- feols(Perc_Manufacturing ~ D_IM_Manu_Trade_17_13 + D_USA_Trade_21_13 + 
                   Log_Manufacturing_1911 | Sector2, 
                 data = industry_data, 
                 subset = ~Manufactures == 1,
-                cluster = ~Sector2)
+                vcov = vcov_cluster(~Sector2))
 
 # Columns 6-7: Port-industry
 
@@ -172,13 +174,13 @@ port_data <- read_dta("Data/Analysis/Analysis_Data_Portlevel.dta") %>%
 model6 <- feols(Perc_Manufacturing ~ D_IM_Manu_Trade_17_13 | ThreeDigit, 
                 data = port_data, 
                 subset = ~OneDigit == "Manufactures",
-                cluster = ~ThreeDigit)
+                vcov = vcov_cluster(~ThreeDigit))
 
 # Model 7: Port-level with four-digit industry and port fixed effects
-model7 <- feols(Perc_Manufacturing ~ D_IM_Manu_Trade_17_13 | Subdivision + Matchedcategory, 
-                data = port_data, 
+model7 <- feols(Perc_Manufacturing ~ D_IM_Manu_Trade_17_13 | Subdivision + Matchedcategory,
+                data = port_data,
                 subset = ~OneDigit == "Manufactures",
-                cluster = ~ThreeDigit)
+                vcov = vcov_cluster(~ThreeDigit))
 
 # Create list of models for table
 models <- list(
@@ -201,7 +203,7 @@ coef_map <- c("D_IM_Manu_Trade_17_13" = "IM Manufactures Shock",
 modelsummary(models,
              coef_map = coef_map,
              stars = c('*' = .1, '**' = .05, '***' = .01),
-             gof_map = c("nobs", "r.squared"))
+             gof_map = c("nobs"))
 
 # Export to LaTeX
 modelsummary(models,
@@ -596,7 +598,6 @@ first_stage_se <- round(se(f1)["IM_Manu_Shock_17_13"], 3)
 first_stage_display <- paste0(first_stage_coef, "***", " (", first_stage_se, ")")
 
 modelsummary(list(iv1, iv2, iv3, iv4))
-etable(iv1, iv2, iv3, iv4)
 
 # Create LaTeX table
 etable(iv1, iv2, iv3, iv4,
